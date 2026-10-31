@@ -80,6 +80,9 @@ This project relies exclusively on authorized open-source packages and the offic
 
 ## Team Names and roles
 The project was designed, developed, and delivered by **Team Skull**:
-- **Shivam (Team Lead & Pipeline Architect):** Formulated problem architecture, developed the Direct Multi-Horizon LightGBM forecasting engine, designed the GreenCompute Carbon Scheduler, and managed repository integrity.
-- **Team Skull Members (Data Engineering & Validation Specialists):** Implemented data cleaning filters for telemetry spikes, designed the rolling walk-forward validation suite, tuned quantile loss parameters, and conducted error slice analyses.
+
+- **Shivam — Team Leader & ML Systems Architect:** Formulated the operational day-ahead problem architecture, designed the direct multi-horizon LightGBM forecasting engine with custom L1 loss, developed the GreenCompute carbon-aware workload scheduler, and ensured strict conformance with offline evaluation sandbox constraints.
+- **Kartikey Singh — Data Engineering & Feature Pipeline Specialist:** Built the robust telemetry data ingestion and cleaning pipeline to eliminate extreme anomalous spikes (such as erroneous 121,000 MW readings), engineered multi-scale temporal lag structures ($Lag_{24}, Lag_{48}, Lag_{72}, Lag_{168}$), rolling window statistics, and implemented the operational CLI inference workflows.
+- **Nishtha Agarwal — Validation & Uncertainty Calibration Specialist:** Developed the strict leakage-free rolling walk-forward cross-validation suite mirroring the hidden test evaluator, tuned the $P_{10}$ and $P_{90}$ quantile regression models to achieve non-crossing prediction intervals with 81.4% coverage, and authored the comprehensive model error analysis documentation.
+
 Every team member actively contributed to model validation, code reviews, and live presentation preparation throughout the hackathon.
