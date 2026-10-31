@@ -12,6 +12,9 @@ vendor/
 data/
 *.csv
 !sample_forecast_one_origin.csv
+predictions.csv
+docs/*.pdf
+docs/print_document.html
 
 dist/
 build/
