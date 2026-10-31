@@ -15,7 +15,7 @@
   },
   "servers": [
     {
-      "url": "https://team-skull.vercel.app",
+      "url": "https://team-skull-ocdec.vercel.app",
       "description": "Production Edge Deployment (Vercel)"
     },
     {
@@ -307,3 +307,4 @@
     }
   }
 }
+

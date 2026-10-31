@@ -2,15 +2,15 @@
 
 [![Hack Day Project](https://img.shields.io/badge/Status-Evaluation%20Ready-success.svg)](https://github.com/shivamvault/TEAM-SKULL)
 [![Problem](https://img.shields.io/badge/Problem-P2%3A%20Tomorrow's%20Load-orange.svg)](https://github.com/shivamvault/TEAM-SKULL)
-[![Website](https://img.shields.io/badge/Live%20Website-Vercel%20App-00f5a0.svg)](https://team-skull.vercel.app)
-[![Swagger API](https://img.shields.io/badge/API%20Docs-Swagger%20UI-85ea2d.svg)](https://team-skull.vercel.app/swagger.html)
+[![Website](https://img.shields.io/badge/Live%20Website-Vercel%20App-00f5a0.svg)](https://team-skull-ocdec.vercel.app)
+[![Swagger API](https://img.shields.io/badge/API%20Docs-Swagger%20UI-85ea2d.svg)](https://team-skull-ocdec.vercel.app/swagger.html)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 > Built by **Team Skull** for Hacktoberfest Hack Day Lucknow (AI Community Lucknow).
 > **Problem 02:** Tomorrow's Load (Time Series Demand Forecasting) with **Carbon Emission Monitoring & GreenCompute Task Scheduling**.
 > 
-> 🌐 **Live Website & Dashboard:** [https://team-skull.vercel.app](https://team-skull.vercel.app)  
-> 📖 **Interactive Swagger API Documentation:** [https://team-skull.vercel.app/swagger.html](https://team-skull.vercel.app/swagger.html)  
+> 🌐 **Live Website & Dashboard:** [https://team-skull-ocdec.vercel.app](https://team-skull-ocdec.vercel.app)  
+> 📖 **Interactive Swagger API Documentation:** [https://team-skull-ocdec.vercel.app/swagger.html](https://team-skull-ocdec.vercel.app/swagger.html)  
 > 📄 **OpenAPI 3.0 Specification:** [`frontend/openapi.json`](frontend/openapi.json)
 
 ---
@@ -69,8 +69,8 @@ python -m src.scheduler_cli --task "LLM LoRA Fine-Tuning" --duration 4 --power 5
 ### 5. Interactive Swagger REST API & Live Website
 To make our solution production-ready and easily testable by judges without needing to install Python dependencies locally, we built an interactive **Swagger (OpenAPI 3.0)** documentation suite alongside our live web platform:
 
-- 🌐 **Live Website & Dashboard:** [https://team-skull.vercel.app](https://team-skull.vercel.app)
-- 📖 **Interactive Swagger UI Playground:** [https://team-skull.vercel.app/swagger.html](https://team-skull.vercel.app/swagger.html)
+- 🌐 **Live Website & Dashboard:** [https://team-skull-ocdec.vercel.app](https://team-skull-ocdec.vercel.app)
+- 📖 **Interactive Swagger UI Playground:** [https://team-skull-ocdec.vercel.app/swagger.html](https://team-skull-ocdec.vercel.app/swagger.html)
 - 📄 **OpenAPI 3.0.3 Specification File:** [`frontend/openapi.json`](frontend/openapi.json)
 
 #### What is the Swagger API?
@@ -87,7 +87,7 @@ Swagger provides an interactive web-based playground and schema contract for our
 #### Sample API Request (cURL)
 ```bash
 # Query the GreenCompute Workload Scheduler via cURL
-curl -X POST "https://team-skull.vercel.app/api/v1/schedule" \
+curl -X POST "https://team-skull-ocdec.vercel.app/api/v1/schedule" \
      -H "Content-Type: application/json" \
      -d '{
        "task_name": "LLM Fine-Tuning (Llama-3-70B)",
