@@ -2,10 +2,16 @@
 
 [![Hack Day Project](https://img.shields.io/badge/Status-Evaluation%20Ready-success.svg)](https://github.com/shivamvault/TEAM-SKULL)
 [![Problem](https://img.shields.io/badge/Problem-P2%3A%20Tomorrow's%20Load-orange.svg)](https://github.com/shivamvault/TEAM-SKULL)
+[![Website](https://img.shields.io/badge/Live%20Website-Vercel%20App-00f5a0.svg)](https://team-skull.vercel.app)
+[![Swagger API](https://img.shields.io/badge/API%20Docs-Swagger%20UI-85ea2d.svg)](https://team-skull.vercel.app/swagger.html)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 > Built by **Team Skull** for Hacktoberfest Hack Day Lucknow (AI Community Lucknow).
 > **Problem 02:** Tomorrow's Load (Time Series Demand Forecasting) with **Carbon Emission Monitoring & GreenCompute Task Scheduling**.
+> 
+> 🌐 **Live Website & Dashboard:** [https://team-skull.vercel.app](https://team-skull.vercel.app)  
+> 📖 **Interactive Swagger API Documentation:** [https://team-skull.vercel.app/swagger.html](https://team-skull.vercel.app/swagger.html)  
+> 📄 **OpenAPI 3.0 Specification:** [`frontend/openapi.json`](frontend/openapi.json)
 
 ---
 
@@ -59,6 +65,19 @@ To schedule an automated LLM fine-tuning or training workload into the greenest 
 ```bash
 python -m src.scheduler_cli --task "LLM LoRA Fine-Tuning" --duration 4 --power 5.6
 ```
+
+### 5. Interactive Swagger REST API & Live Website
+Our operational forecasting system exposes a complete OpenAPI 3.0 REST API alongside an interactive web dashboard:
+- **Live Web Dashboard:** [https://team-skull.vercel.app](https://team-skull.vercel.app)
+- **Live Swagger API Reference:** [https://team-skull.vercel.app/swagger.html](https://team-skull.vercel.app/swagger.html)
+- **Raw OpenAPI Specification:** [`frontend/openapi.json`](frontend/openapi.json)
+
+| HTTP Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/v1/forecast` | Generates 24-hour day-ahead demand predictions (`demand_mw`) with calibrated $P_{10}$ and $P_{90}$ uncertainty bands. |
+| `POST` | `/api/v1/schedule` | Computes optimal low-carbon execution windows for heavy batch jobs (LLM fine-tuning, training, ETL). |
+| `GET` | `/api/v1/carbon-intensity` | Returns hourly grid carbon intensity ($gCO_2/kWh$) derived from generation fuel mix. |
+| `GET` | `/api/v1/health` | Telemetry endpoint reporting 2-CPU/4GB sandbox health, memory footprint, and model latency (1.72s). |
 
 ## Use of AI tools
 We used AI assistants thoughtfully to speed up our workflow during the hackathon:

@@ -1,0 +1,309 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Team Skull - Grid Load & GreenCompute Intelligence API",
+    "description": "High-performance Day-Ahead 24-hour Electricity Demand Forecasting with calibrated P10-P90 uncertainty bounds and carbon-aware compute task dispatching.\n\nBuilt for **Hacktoberfest Hack Day Lucknow (Problem 02: Tomorrow's Load)**.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Team Skull",
+      "url": "https://github.com/shivamvault/TEAM-SKULL"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://team-skull.vercel.app",
+      "description": "Production Edge Deployment (Vercel)"
+    },
+    {
+      "url": "http://localhost:8080",
+      "description": "Local Development Server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Forecasting",
+      "description": "Multi-horizon day-ahead load forecasting models"
+    },
+    {
+      "name": "GreenCompute",
+      "description": "Carbon-aware workload placement & emission optimization"
+    },
+    {
+      "name": "Grid Telemetry",
+      "description": "Carbon intensity and fuel mix telemetry"
+    },
+    {
+      "name": "System",
+      "description": "Sandbox health, latency, and compliance status"
+    }
+  ],
+  "paths": {
+    "/api/v1/forecast": {
+      "post": {
+        "tags": ["Forecasting"],
+        "summary": "Generate 24-hour day-ahead demand forecast",
+        "description": "Ingests historical grid telemetry prior to midnight (23:00 D-1) and produces 24 hourly predictions with calibrated P10 and P90 uncertainty bands.",
+        "operationId": "generateDayAheadForecast",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForecastRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful forecast response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForecastResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable entity / schema violation"
+          }
+        }
+      }
+    },
+    "/api/v1/schedule": {
+      "post": {
+        "tags": ["GreenCompute"],
+        "summary": "Calculate optimal low-carbon execution window",
+        "description": "Computes the most carbon-efficient schedule for an automated compute task (e.g. LLM fine-tuning, ETL pipeline) across the day-ahead horizon.",
+        "operationId": "scheduleGreenWorkload",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScheduleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Optimal execution schedule and CO2 savings breakdown",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScheduleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/carbon-intensity": {
+      "get": {
+        "tags": ["Grid Telemetry"],
+        "summary": "Retrieve 24-hour grid carbon intensity profile",
+        "description": "Returns hourly carbon intensity (gCO2/kWh) computed from fuel generation mix (coal, gas, peakers, hydro, solar, wind).",
+        "operationId": "getCarbonIntensity",
+        "responses": {
+          "200": {
+            "description": "24-hour carbon profile",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarbonProfileResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/health": {
+      "get": {
+        "tags": ["System"],
+        "summary": "Check evaluator sandbox health & latency limits",
+        "description": "Reports inference time, memory footprint, and verification status against 2-CPU / 4GB offline constraints.",
+        "operationId": "getHealthStatus",
+        "responses": {
+          "200": {
+            "description": "System health metrics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ForecastRequest": {
+        "type": "object",
+        "required": ["origin_timestamp", "horizon"],
+        "properties": {
+          "origin_timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-06-16T00:00:00Z"
+          },
+          "horizon": {
+            "type": "integer",
+            "default": 24,
+            "example": 24
+          },
+          "include_uncertainty": {
+            "type": "boolean",
+            "default": true,
+            "example": true
+          }
+        }
+      },
+      "HourlyForecast": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "example": "2024-06-16 00:00"
+          },
+          "demand_mw": {
+            "type": "number",
+            "example": 11520.4
+          },
+          "p10": {
+            "type": "number",
+            "example": 10980.2
+          },
+          "p90": {
+            "type": "number",
+            "example": 12150.8
+          }
+        }
+      },
+      "ForecastResponse": {
+        "type": "object",
+        "properties": {
+          "origin": {
+            "type": "string",
+            "example": "2024-06-16 00:00"
+          },
+          "model": {
+            "type": "string",
+            "example": "LightGBM Direct Multi-Horizon (L1 Loss)"
+          },
+          "inference_ms": {
+            "type": "number",
+            "example": 172.4
+          },
+          "forecasts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HourlyForecast"
+            }
+          }
+        }
+      },
+      "ScheduleRequest": {
+        "type": "object",
+        "required": ["task_name", "duration_hours", "power_kw"],
+        "properties": {
+          "task_name": {
+            "type": "string",
+            "example": "LLM Fine-Tuning (Llama-3-70B)"
+          },
+          "duration_hours": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 24,
+            "example": 4
+          },
+          "power_kw": {
+            "type": "number",
+            "minimum": 0.1,
+            "example": 5.5
+          }
+        }
+      },
+      "ScheduleResponse": {
+        "type": "object",
+        "properties": {
+          "task_name": {
+            "type": "string",
+            "example": "LLM Fine-Tuning (Llama-3-70B)"
+          },
+          "optimal_window": {
+            "type": "object",
+            "properties": {
+              "start_time": { "type": "string", "example": "07:00" },
+              "end_time": { "type": "string", "example": "11:00" },
+              "avg_carbon_intensity": { "type": "number", "example": 707.8 },
+              "total_co2_kg": { "type": "number", "example": 15.57 }
+            }
+          },
+          "baseline_window": {
+            "type": "object",
+            "properties": {
+              "start_time": { "type": "string", "example": "00:00" },
+              "avg_carbon_intensity": { "type": "number", "example": 795.1 },
+              "total_co2_kg": { "type": "number", "example": 17.49 }
+            }
+          },
+          "carbon_reduction_pct": {
+            "type": "number",
+            "example": 11.0
+          },
+          "co2_saved_kg": {
+            "type": "number",
+            "example": 1.92
+          },
+          "equivalent_metrics": {
+            "type": "object",
+            "properties": {
+              "ev_km_offset": { "type": "number", "example": 12.5 },
+              "smartphones_charged": { "type": "integer", "example": 238 }
+            }
+          }
+        }
+      },
+      "CarbonProfileResponse": {
+        "type": "object",
+        "properties": {
+          "grid": { "type": "string", "example": "National Transmission Network" },
+          "solar_valley_window": { "type": "string", "example": "10:00 - 14:00" },
+          "peaker_risk_window": { "type": "string", "example": "18:00 - 22:00" },
+          "hourly_intensity_gco2_per_kwh": {
+            "type": "array",
+            "items": { "type": "number" },
+            "example": [795.1, 802.4, 810.0, 805.2, 790.0, 780.4, 740.2, 707.8, 680.5, 665.2, 650.0, 660.1, 672.4, 690.3, 720.0, 760.5, 810.2, 845.0, 858.0, 850.2, 840.1, 825.4, 812.0, 800.5]
+          }
+        }
+      },
+      "HealthResponse": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string", "example": "healthy" },
+          "sandbox_compliance": {
+            "type": "object",
+            "properties": {
+              "cpu_cores_limit": { "type": "integer", "example": 2 },
+              "ram_limit_mb": { "type": "integer", "example": 4096 },
+              "ram_used_mb": { "type": "number", "example": 164.2 },
+              "offline_ready": { "type": "boolean", "example": true },
+              "inference_latency_sec": { "type": "number", "example": 1.72 }
+            }
+          }
+        }
+      }
+    }
+  }
+}

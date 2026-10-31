@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Skull — Swagger API Reference | Tomorrow's Load</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <style>
+        :root {
+            --bg-color: #070709;
+            --card-bg: #0e0e14;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-mint: #00f2a9;
+            --text-primary: #f4f4f5;
+            --text-secondary: #a1a1aa;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .header-bar {
+            background: rgba(7, 7, 9, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand-flex {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: -0.02em;
+            color: #fff;
+        }
+
+        .brand-badge {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: var(--accent-mint);
+            background: rgba(0, 242, 169, 0.1);
+            border: 1px solid rgba(0, 242, 169, 0.25);
+            padding: 2px 8px;
+            border-radius: 999px;
+            margin-left: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-btn {
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-btn-outline {
+            color: #d4d4d8;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+        }
+
+        .nav-btn-outline:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+        }
+
+        .nav-btn-mint {
+            color: #070709;
+            background: var(--accent-mint);
+            border: 1px solid var(--accent-mint);
+        }
+
+        .nav-btn-mint:hover {
+            box-shadow: 0 0 16px rgba(0, 242, 169, 0.4);
+        }
+
+        /* Swagger UI Dark Mode overrides */
+        .swagger-ui {
+            filter: invert(88%) hue-rotate(180deg);
+        }
+
+        .swagger-ui .topbar {
+            display: none !important;
+        }
+
+        .swagger-ui .wrapper {
+            max-width: 1200px;
+            padding: 20px;
+        }
+
+        .swagger-ui .info {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <header class="header-bar">
+        <div class="brand-flex">
+            <span class="brand-title">TEAM SKULL</span>
+            <span class="brand-badge">OpenAPI 3.0.3</span>
+            <span style="font-size: 12px; color: var(--text-secondary); margin-left: 8px;">Energy Intelligence & GreenCompute API</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-btn nav-btn-outline">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Live Dashboard</span>
+            </a>
+            <a href="https://github.com/shivamvault/TEAM-SKULL" target="_blank" class="nav-btn nav-btn-outline">
+                <i class="fa-brands fa-github"></i>
+                <span>GitHub</span>
+            </a>
+            <a href="openapi.json" target="_blank" class="nav-btn nav-btn-mint">
+                <i class="fa-solid fa-download"></i>
+                <span>Raw OpenAPI Spec</span>
+            </a>
+        </div>
+    </header>
+
+    <div id="swagger-ui"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
+    <script>
+        window.onload = function() {
+            window.ui = SwaggerUIBundle({
+                url: "openapi.json",
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIBundle.SwaggerUIStandalonePreset
+                ],
+                layout: "BaseLayout"
+            });
+        };
+    </script>
+</body>
+</html>
