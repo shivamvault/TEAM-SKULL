@@ -67,17 +67,53 @@ python -m src.scheduler_cli --task "LLM LoRA Fine-Tuning" --duration 4 --power 5
 ```
 
 ### 5. Interactive Swagger REST API & Live Website
-Our operational forecasting system exposes a complete OpenAPI 3.0 REST API alongside an interactive web dashboard:
-- **Live Web Dashboard:** [https://team-skull.vercel.app](https://team-skull.vercel.app)
-- **Live Swagger API Reference:** [https://team-skull.vercel.app/swagger.html](https://team-skull.vercel.app/swagger.html)
-- **Raw OpenAPI Specification:** [`frontend/openapi.json`](frontend/openapi.json)
+To make our solution production-ready and easily testable by judges without needing to install Python dependencies locally, we built an interactive **Swagger (OpenAPI 3.0)** documentation suite alongside our live web platform:
 
+- 🌐 **Live Website & Dashboard:** [https://team-skull.vercel.app](https://team-skull.vercel.app)
+- 📖 **Interactive Swagger UI Playground:** [https://team-skull.vercel.app/swagger.html](https://team-skull.vercel.app/swagger.html)
+- 📄 **OpenAPI 3.0.3 Specification File:** [`frontend/openapi.json`](frontend/openapi.json)
+
+#### What is the Swagger API?
+Swagger provides an interactive web-based playground and schema contract for our machine learning and carbon optimization backend. Rather than digging through raw Python scripts, judges and operators can inspect every endpoint directly in their browser, click **"Try it out"**, test custom parameters (such as changing an AI training run from 4 to 8 hours), and immediately see the resulting forecast, carbon intensity curves, and CO₂ savings.
+
+#### Core REST Endpoints
 | HTTP Method | Endpoint | Description |
 | :--- | :--- | :--- |
 | `POST` | `/api/v1/forecast` | Generates 24-hour day-ahead demand predictions (`demand_mw`) with calibrated $P_{10}$ and $P_{90}$ uncertainty bands. |
 | `POST` | `/api/v1/schedule` | Computes optimal low-carbon execution windows for heavy batch jobs (LLM fine-tuning, training, ETL). |
 | `GET` | `/api/v1/carbon-intensity` | Returns hourly grid carbon intensity ($gCO_2/kWh$) derived from generation fuel mix. |
 | `GET` | `/api/v1/health` | Telemetry endpoint reporting 2-CPU/4GB sandbox health, memory footprint, and model latency (1.72s). |
+
+#### Sample API Request (cURL)
+```bash
+# Query the GreenCompute Workload Scheduler via cURL
+curl -X POST "https://team-skull.vercel.app/api/v1/schedule" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "task_name": "LLM Fine-Tuning (Llama-3-70B)",
+       "duration_hours": 4,
+       "power_kw": 5.5
+     }'
+```
+
+#### Sample JSON Response
+```json
+{
+  "task_name": "LLM Fine-Tuning (Llama-3-70B)",
+  "optimal_window": {
+    "start_time": "07:00",
+    "end_time": "11:00",
+    "avg_carbon_intensity": 707.8,
+    "total_co2_kg": 15.57
+  },
+  "carbon_reduction_pct": 11.0,
+  "co2_saved_kg": 1.92,
+  "equivalent_metrics": {
+    "ev_km_offset": 12.5,
+    "smartphones_charged": 238
+  }
+}
+```
 
 ## Use of AI tools
 We used AI assistants thoughtfully to speed up our workflow during the hackathon:
