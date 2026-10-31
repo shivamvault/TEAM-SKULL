@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team Skull | Grid Demand & GreenCompute Hub</title>
-    <!-- Modern Sans Font -->
+    <title>SKULL · Grid & Carbon Intelligence</title>
+    
+    <!-- Modern Tech Fonts: Space Grotesk (Headings), Outfit (Body), Space Mono (Data) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -15,39 +17,97 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
+                        heading: ['Space Grotesk', 'sans-serif'],
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['Space Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            base: '#070709',
+                            card: '#0f1015',
+                            cardHover: '#14161e',
+                            border: 'rgba(255, 255, 255, 0.07)',
+                            borderHover: 'rgba(0, 245, 160, 0.35)',
+                            mint: '#00F5A0',
+                            mintDark: '#00D185',
+                            violet: '#8B5CF6',
+                            amber: '#F59E0B',
+                            coral: '#FF4D6D'
+                        }
                     }
                 }
             }
         }
     </script>
+    
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
+        :root {
+            --mint: #00F5A0;
+            --violet: #8B5CF6;
+        }
+
         body {
-            background-color: #0b0f17;
-            color: #e2e8f0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #070709;
+            color: #E2E8F0;
+            font-family: 'Outfit', sans-serif;
+            background-image: 
+                radial-gradient(circle at 10% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 90% 15%, rgba(0, 245, 160, 0.07) 0%, transparent 40%),
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
         }
 
-        .card {
-            background: #121824;
-            border: 1px solid #1e293b;
-            border-radius: 12px;
+        /* Glassmorphism Panels */
+        .glass-panel {
+            background: rgba(15, 16, 21, 0.72);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .font-num {
-            font-family: 'JetBrains Mono', monospace;
+        .glass-panel:hover {
+            border-color: rgba(255, 255, 255, 0.14);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.6);
         }
 
+        .glow-mint-card {
+            border-color: rgba(0, 245, 160, 0.3) !important;
+            box-shadow: 0 0 35px -8px rgba(0, 245, 160, 0.18) !important;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.15); }
+        }
+
+        .pulse-dot {
+            animation: pulseGlow 2.5s infinite ease-in-out;
+        }
+
+        /* Range Slider */
         input[type="range"] {
             -webkit-appearance: none;
             width: 100%;
             height: 6px;
-            background: #1e293b;
+            background: #1b1d26;
             border-radius: 9999px;
             outline: none;
         }
@@ -56,123 +116,137 @@
             width: 18px;
             height: 18px;
             border-radius: 50%;
-            background: #10b981;
+            background: #00F5A0;
             cursor: pointer;
-            border: 2px solid #0b0f17;
-            box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 0 14px #00F5A0;
+            border: 2px solid #070709;
+            transition: transform 0.15s ease;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
         }
 
-        .tab-active {
-            background-color: #1e293b;
-            color: #38bdf8;
-            border-color: #38bdf8;
+        /* Active / Inactive Tabs */
+        .tab-btn {
+            font-family: 'Space Grotesk', sans-serif;
+            transition: all 0.25s ease;
         }
-        .tab-inactive {
-            color: #94a3b8;
+        .tab-btn-active {
+            background: rgba(255, 255, 255, 0.08);
+            color: #00F5A0;
+            border: 1px solid rgba(0, 245, 160, 0.3);
         }
-        .tab-inactive:hover {
-            color: #f1f5f9;
-            background-color: #182234;
+        .tab-btn-inactive {
+            color: #71717a;
+            border: 1px solid transparent;
+        }
+        .tab-btn-inactive:hover {
+            color: #e4e4e7;
+            background: rgba(255, 255, 255, 0.03);
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-emerald-500/30 selection:text-emerald-300">
+<body class="min-h-screen flex flex-col justify-between selection:bg-emerald-500/20 selection:text-emerald-300">
 
-    <!-- Top Navigation Bar -->
-    <header class="border-b border-slate-800 bg-[#0d131f]/90 sticky top-0 z-50">
+    <!-- Top Navigation -->
+    <header class="border-b border-white/[0.06] bg-[#070709]/80 backdrop-blur-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-9 h-9 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold">
-                    ⚡
+            <div class="flex items-center space-x-3.5">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-mint to-brand-violet p-[1px] shadow-lg shadow-brand-mint/10">
+                    <div class="w-full h-full bg-[#070709] rounded-xl flex items-center justify-center font-mono font-bold text-sm text-brand-mint">
+                        ⚡
+                    </div>
                 </div>
                 <div>
-                    <div class="font-bold text-base text-white tracking-tight flex items-center gap-2">
+                    <div class="font-heading font-bold text-base text-white tracking-tight flex items-center gap-2.5">
                         TEAM SKULL
-                        <span class="text-xs font-mono font-medium text-slate-400 bg-slate-800 px-2 py-0.5 rounded">P2: Tomorrow's Load</span>
+                        <span class="text-[10px] font-mono font-medium text-brand-mint bg-brand-mint/10 border border-brand-mint/20 px-2 py-0.5 rounded-full">
+                            P2: Tomorrow's Load
+                        </span>
                     </div>
-                    <div class="text-[11px] text-slate-400">Hacktoberfest Hack Day Lucknow · National Grid Operations</div>
+                    <div class="text-[11px] text-zinc-400 font-sans">Hacktoberfest Hack Day Lucknow · National Grid Operations</div>
                 </div>
             </div>
 
-            <div class="flex items-center space-x-3">
-                <div class="hidden sm:flex items-center gap-2 text-xs font-mono bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg text-slate-300">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                    <span>Direct LightGBM + L1 MAE</span>
+            <div class="flex items-center space-x-3.5">
+                <div class="hidden sm:flex items-center gap-2 text-xs font-mono bg-white/[0.03] border border-white/[0.06] px-3 py-1.5 rounded-lg text-zinc-300">
+                    <span class="w-2 h-2 rounded-full bg-brand-mint pulse-dot"></span>
+                    <span>24h Walk-Forward ML</span>
                 </div>
-                <div class="hidden md:flex items-center gap-1.5 text-xs font-mono bg-emerald-950/40 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-lg font-bold">
+                <div class="hidden md:flex items-center gap-1.5 text-xs font-mono bg-brand-mint/10 text-brand-mint border border-brand-mint/20 px-3 py-1.5 rounded-lg font-bold">
                     <span>CV MAPE: 3.92%</span>
                 </div>
-                <a href="https://github.com/shivamvault/TEAM-SKULL" target="_blank" class="text-xs bg-slate-800 hover:bg-slate-700 text-white px-3.5 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1.5 font-medium">
-                    <i class="fa-brands fa-github"></i>
+                <a href="https://github.com/shivamvault/TEAM-SKULL" target="_blank" class="text-xs bg-white/[0.05] hover:bg-white/[0.1] text-zinc-200 px-3.5 py-1.5 rounded-lg border border-white/[0.08] transition flex items-center gap-1.5 font-medium shadow-sm">
+                    <i class="fa-brands fa-github text-sm"></i>
                     <span>GitHub</span>
                 </a>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-6 py-8 space-y-6 flex-grow w-full">
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-6 py-8 space-y-7 flex-grow w-full animate-fade-in">
 
-        <!-- Header Overview -->
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <!-- Hero Section -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 pb-2">
             <div>
-                <div class="text-xs font-mono text-emerald-400 font-semibold tracking-wider uppercase mb-1">
-                    Day-Ahead Operational Planning (24-Hour Horizon)
+                <div class="inline-flex items-center gap-2 text-xs font-mono text-brand-mint font-semibold uppercase tracking-widest mb-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-brand-mint"></span> Intelligent Energy Dispatch & Sustainability
                 </div>
-                <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
-                    Electricity Demand & Carbon-Aware Dispatch
+                <h1 class="font-heading text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+                    Grid Demand & <span class="bg-gradient-to-r from-brand-mint via-teal-300 to-brand-violet bg-clip-text text-transparent">GreenCompute</span> Engine
                 </h1>
-                <p class="text-slate-400 text-sm mt-1 max-w-2xl">
-                    Probabilistic demand forecasting with P10–P90 uncertainty intervals coupled with optimal workload scheduling to minimize grid carbon emissions.
+                <p class="text-zinc-400 text-sm mt-1 max-w-2xl font-sans">
+                    Multi-horizon day-ahead load forecasting with calibrated P10–P90 uncertainty intervals and dynamic carbon-aware AI workload scheduling.
                 </p>
             </div>
 
-            <!-- Preset Buttons -->
-            <div class="flex items-center gap-2">
-                <span class="text-xs text-slate-400 font-mono">Workload Presets:</span>
-                <button onclick="setPreset('LLM Training (8x H100)', 4, 5.6)" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs rounded-lg border border-slate-700 transition font-medium">
+            <!-- Quick Presets -->
+            <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-xs text-zinc-500 font-mono">Workload Presets:</span>
+                <button onclick="setPreset('LLM Training (8x H100)', 4, 5.6)" class="px-3 py-1.5 bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 text-xs rounded-lg border border-white/[0.08] transition font-mono">
                     8x H100 (5.6kW)
                 </button>
-                <button onclick="setPreset('Model Distill (4x A100)', 6, 2.4)" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs rounded-lg border border-slate-700 transition font-medium">
+                <button onclick="setPreset('Model Distill (4x A100)', 6, 2.4)" class="px-3 py-1.5 bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 text-xs rounded-lg border border-white/[0.08] transition font-mono">
                     4x A100 (2.4kW)
                 </button>
-                <button onclick="setPreset('Daily Spark ETL', 3, 1.2)" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs rounded-lg border border-slate-700 transition font-medium">
+                <button onclick="setPreset('Nightly BigQuery ETL', 3, 1.2)" class="px-3 py-1.5 bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 text-xs rounded-lg border border-white/[0.08] transition font-mono">
                     Spark ETL (1.2kW)
                 </button>
             </div>
         </div>
 
-        <!-- 4 Metric Cards -->
+        <!-- Metric KPI Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="card p-5">
-                <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Forecast Peak Load</div>
-                <div class="text-2xl font-bold text-white mt-2 font-num">12,630 <span class="text-sm font-normal text-slate-500">MW</span></div>
-                <div class="text-xs text-rose-400 mt-2 flex items-center gap-1.5 font-medium">
-                    <span class="w-2 h-2 rounded-full bg-rose-500"></span> Evening Peaker Surge (23:00)
+            <div class="glass-panel p-5">
+                <div class="text-[11px] font-mono text-zinc-400 uppercase tracking-wider font-semibold">Forecast Peak Load</div>
+                <div class="font-mono text-2xl font-bold text-white mt-1.5">12,630 <span class="text-xs text-zinc-500 font-normal">MW</span></div>
+                <div class="text-xs text-brand-coral mt-2 flex items-center gap-1.5 font-medium">
+                    <span class="w-1.5 h-1.5 rounded-full bg-brand-coral"></span> Evening Peak (23:00)
                 </div>
             </div>
 
-            <div class="card p-5">
-                <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Solar Valley Floor</div>
-                <div class="text-2xl font-bold text-white mt-2 font-num">10,010 <span class="text-sm font-normal text-slate-500">MW</span></div>
-                <div class="text-xs text-cyan-400 mt-2 flex items-center gap-1.5 font-medium">
-                    <i class="fa-solid fa-sun text-xs"></i> Midday Clean Solar Dip (10:00)
+            <div class="glass-panel p-5">
+                <div class="text-[11px] font-mono text-zinc-400 uppercase tracking-wider font-semibold">Solar Valley Floor</div>
+                <div class="font-mono text-2xl font-bold text-white mt-1.5">10,010 <span class="text-xs text-zinc-500 font-normal">MW</span></div>
+                <div class="text-xs text-brand-mint mt-2 flex items-center gap-1.5 font-medium">
+                    <i class="fa-solid fa-sun text-[11px]"></i> Midday Clean Window (10:00)
                 </div>
             </div>
 
-            <div class="card p-5">
-                <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Model Validation MAPE</div>
-                <div class="text-2xl font-bold text-emerald-400 mt-2 font-num">3.92%</div>
-                <div class="text-xs text-emerald-400 mt-2 flex items-center gap-1.5 font-medium">
-                    <i class="fa-solid fa-check"></i> Excellent Band (Benchmark &le; 4.0%)
+            <div class="glass-panel p-5">
+                <div class="text-[11px] font-mono text-zinc-400 uppercase tracking-wider font-semibold">Model Validation MAPE</div>
+                <div class="font-mono text-2xl font-bold text-brand-mint mt-1.5">3.92%</div>
+                <div class="text-xs text-brand-mint/90 mt-2 flex items-center gap-1.5 font-medium">
+                    <i class="fa-solid fa-circle-check text-[11px]"></i> Top Tier (Benchmark &le; 4.0%)
                 </div>
             </div>
 
-            <div class="card p-5 border-emerald-500/30 bg-emerald-950/20">
-                <div class="text-xs font-semibold text-slate-300 uppercase tracking-wider">CO₂ Reduction Potential</div>
-                <div class="text-2xl font-bold text-emerald-400 mt-2 font-num" id="kpi-pct">-16.6%</div>
-                <div class="text-xs text-emerald-300 mt-2 flex items-center gap-1.5 font-medium" id="kpi-saved-kg">
-                    <i class="fa-solid fa-leaf text-xs"></i> 3.15 kg CO₂ Avoided
+            <div class="glass-panel glow-mint-card p-5 bg-brand-mint/[0.03]">
+                <div class="text-[11px] font-mono text-zinc-400 uppercase tracking-wider font-semibold">Carbon Reduction</div>
+                <div class="font-mono text-2xl font-bold text-brand-mint mt-1.5" id="kpi-pct">-16.6%</div>
+                <div class="text-xs text-zinc-300 mt-2 flex items-center gap-1.5 font-medium" id="kpi-saved-kg">
+                    <i class="fa-solid fa-leaf text-brand-mint text-[11px]"></i> 3.15 kg CO₂ Avoided
                 </div>
             </div>
         </div>
@@ -180,34 +254,34 @@
         <!-- Main Workspace (Chart & Dispatcher) -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
-            <!-- Chart Section (8 Cols) -->
-            <div class="lg:col-span-8 card p-6 space-y-4">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+            <!-- Chart Panel (8 Cols) -->
+            <div class="lg:col-span-8 glass-panel p-6 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.06] pb-4">
                     <!-- Tab Toggles -->
                     <div class="flex items-center space-x-2">
-                        <button id="tab-btn-demand" onclick="switchTab('demand')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold border border-transparent transition tab-active">
-                            Demand & Uncertainty Bands
+                        <button id="tab-btn-demand" onclick="switchTab('demand')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold tab-btn-active">
+                            Demand Profile & Bands
                         </button>
-                        <button id="tab-btn-carbon" onclick="switchTab('carbon')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold border border-transparent transition tab-inactive">
+                        <button id="tab-btn-carbon" onclick="switchTab('carbon')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold tab-btn-inactive">
                             Carbon Intensity (g/kWh)
                         </button>
-                        <button id="tab-btn-audit" onclick="switchTab('audit')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold border border-transparent transition tab-inactive">
+                        <button id="tab-btn-audit" onclick="switchTab('audit')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold tab-btn-inactive">
                             Evaluator Benchmarks
                         </button>
                     </div>
 
                     <!-- Legend -->
                     <div id="chart-legend" class="flex items-center gap-4 text-xs font-mono">
-                        <span class="flex items-center gap-1.5 text-slate-300">
-                            <span class="w-3 h-1 bg-cyan-400 rounded"></span> Forecast (MW)
+                        <span class="flex items-center gap-1.5 text-zinc-300">
+                            <span class="w-3 h-1 bg-brand-mint rounded"></span> Forecast (MW)
                         </span>
-                        <span class="flex items-center gap-1.5 text-slate-400">
-                            <span class="w-3 h-2 bg-indigo-500/30 border border-indigo-400/40 rounded"></span> P10–P90 Band
+                        <span class="flex items-center gap-1.5 text-zinc-400">
+                            <span class="w-3 h-2 bg-brand-violet/25 border border-brand-violet/40 rounded"></span> P10–P90 Band
                         </span>
                     </div>
                 </div>
 
-                <!-- Views Container -->
+                <!-- Canvas Views -->
                 <div id="view-demand" class="relative" style="height: 380px;">
                     <canvas id="demandChart"></canvas>
                 </div>
@@ -219,85 +293,85 @@
                 <div id="view-audit" class="hidden overflow-x-auto py-2" style="height: 380px;">
                     <table class="w-full text-left text-xs border-collapse">
                         <thead>
-                            <tr class="border-b border-slate-800 text-slate-400 font-mono">
+                            <tr class="border-b border-white/[0.08] text-zinc-400 font-mono">
                                 <th class="pb-3 font-semibold">Evaluation Metric</th>
-                                <th class="pb-3 text-emerald-400 font-bold">Team Skull</th>
-                                <th class="pb-3">Lazy Baseline</th>
-                                <th class="pb-3">Good Baseline</th>
+                                <th class="pb-3 text-brand-mint font-bold">Team Skull</th>
+                                <th class="pb-3">Lazy Benchmark</th>
+                                <th class="pb-3">Good Benchmark</th>
                                 <th class="pb-3">Excellent Target</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-800 font-mono text-slate-300">
+                        <tbody class="divide-y divide-white/[0.06] font-mono text-zinc-300">
                             <tr>
                                 <td class="py-3 font-sans font-medium text-white">Primary: Mean APE (MAPE %)</td>
-                                <td class="py-3 text-emerald-400 font-bold">3.92%</td>
-                                <td class="py-3 text-slate-500">&ge; 5.84%</td>
-                                <td class="py-3 text-slate-400">&le; 4.80%</td>
-                                <td class="py-3 text-cyan-400 font-semibold">&le; 4.00%</td>
+                                <td class="py-3 text-brand-mint font-bold">3.92%</td>
+                                <td class="py-3 text-zinc-500">&ge; 5.84%</td>
+                                <td class="py-3 text-zinc-400">&le; 4.80%</td>
+                                <td class="py-3 text-brand-mint font-semibold">&le; 4.00%</td>
                             </tr>
                             <tr>
                                 <td class="py-3 font-sans font-medium text-white">Secondary: Peak Demand APE %</td>
-                                <td class="py-3 text-emerald-400 font-bold">3.18%</td>
-                                <td class="py-3 text-slate-500">&ge; 4.50%</td>
-                                <td class="py-3 text-slate-400">&le; 4.00%</td>
-                                <td class="py-3 text-cyan-400 font-semibold">&le; 3.30%</td>
+                                <td class="py-3 text-brand-mint font-bold">3.18%</td>
+                                <td class="py-3 text-zinc-500">&ge; 4.50%</td>
+                                <td class="py-3 text-zinc-400">&le; 4.00%</td>
+                                <td class="py-3 text-brand-mint font-semibold">&le; 3.30%</td>
                             </tr>
                             <tr>
                                 <td class="py-3 font-sans font-medium text-white">Bonus: P10–P90 Coverage</td>
-                                <td class="py-3 text-emerald-400 font-bold">81.4%</td>
-                                <td class="py-3 text-slate-500">&lt; 50%</td>
-                                <td class="py-3 text-slate-400">70%–75%</td>
-                                <td class="py-3 text-cyan-400 font-semibold">75%–85% Target</td>
+                                <td class="py-3 text-brand-mint font-bold">81.4%</td>
+                                <td class="py-3 text-zinc-500">&lt; 50%</td>
+                                <td class="py-3 text-zinc-400">70%–75%</td>
+                                <td class="py-3 text-brand-mint font-semibold">75%–85% Target</td>
                             </tr>
                             <tr>
                                 <td class="py-3 font-sans font-medium text-white">Inference Latency</td>
-                                <td class="py-3 text-emerald-400 font-bold">1.72s</td>
-                                <td class="py-3 text-slate-500">3.50s</td>
-                                <td class="py-3 text-slate-400">2.50s</td>
-                                <td class="py-3 text-cyan-400 font-semibold">&lt; 5.00s Limit</td>
+                                <td class="py-3 text-brand-mint font-bold">1.72s</td>
+                                <td class="py-3 text-zinc-500">3.50s</td>
+                                <td class="py-3 text-zinc-400">2.50s</td>
+                                <td class="py-3 text-brand-mint font-semibold">&lt; 5.00s Limit</td>
                             </tr>
                             <tr>
                                 <td class="py-3 font-sans font-medium text-white">Reproducibility Drift</td>
-                                <td class="py-3 text-emerald-400 font-bold">0.00</td>
-                                <td class="py-3 text-slate-500">N/A</td>
-                                <td class="py-3 text-slate-400">N/A</td>
-                                <td class="py-3 text-cyan-400 font-semibold">&le; 0.25 MAPE points</td>
+                                <td class="py-3 text-brand-mint font-bold">0.00</td>
+                                <td class="py-3 text-zinc-500">N/A</td>
+                                <td class="py-3 text-zinc-400">N/A</td>
+                                <td class="py-3 text-brand-mint font-semibold">&le; 0.25 MAPE points</td>
                             </tr>
                         </tbody>
                     </table>
-                    <div class="mt-4 p-3.5 bg-slate-900 rounded-lg border border-slate-800 text-xs text-slate-400 font-sans leading-relaxed">
+                    <div class="mt-4 p-3.5 bg-black/40 rounded-xl border border-white/[0.06] text-xs text-zinc-400 font-sans leading-relaxed">
                         <strong class="text-white">Audit Result:</strong> Passed all automated checks. Verified offline runtime, zero network dependency, deterministic seeding (`seed=42`), and strict adherence to the 2 CPU / 4GB RAM sandbox limit.
                     </div>
                 </div>
 
-                <div class="flex flex-wrap items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-800/80">
-                    <div>Model: <strong class="text-slate-200">LightGBM (Direct Lags)</strong></div>
-                    <div class="font-mono text-slate-400">Inference Latency: 1.72s &bull; Sandbox Budget: 2 CPU / 4GB</div>
+                <div class="flex flex-wrap items-center justify-between text-xs text-zinc-400 pt-2 border-t border-white/[0.06]">
+                    <div>Model: <strong class="text-zinc-200">LightGBM (Direct Lags)</strong></div>
+                    <div class="font-mono text-zinc-400">Inference: 1.72s &bull; Sandbox Budget: 2 CPU / 4GB</div>
                 </div>
             </div>
 
             <!-- GreenCompute Dispatch Panel (4 Cols) -->
-            <div class="lg:col-span-4 card p-6 space-y-5">
-                <div class="border-b border-slate-800 pb-3 flex items-center justify-between">
+            <div class="lg:col-span-4 glass-panel p-6 space-y-5">
+                <div class="border-b border-white/[0.06] pb-3 flex items-center justify-between">
                     <div>
-                        <h2 class="font-bold text-base text-white">GreenCompute Dispatch</h2>
-                        <p class="text-xs text-slate-400">Workload scheduling based on grid carbon intensity</p>
+                        <h2 class="font-heading font-bold text-base text-white">GreenCompute Dispatch</h2>
+                        <p class="text-xs text-zinc-400">Workload scheduling based on grid carbon intensity</p>
                     </div>
-                    <span class="text-xs font-mono font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded">
-                        Active
+                    <span class="text-[11px] font-mono font-semibold text-brand-mint bg-brand-mint/10 border border-brand-mint/20 px-2.5 py-0.5 rounded-full">
+                        Active Solver
                     </span>
                 </div>
 
                 <!-- Controls -->
-                <div class="space-y-4 text-xs">
+                <div class="space-y-4 text-xs font-sans">
                     <div>
-                        <label class="block text-slate-300 font-medium mb-1.5">Task Description</label>
-                        <input id="input-task" type="text" value="LLM Fine-Tuning (8x H100)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white font-mono focus:border-emerald-500 focus:outline-none">
+                        <label class="block text-zinc-300 font-medium mb-1.5">Task Description</label>
+                        <input id="input-task" type="text" value="LLM Fine-Tuning (8x H100)" class="w-full bg-[#0a0b0e] border border-white/[0.08] rounded-xl px-3 py-2 text-white font-mono focus:border-brand-mint focus:outline-none transition">
                     </div>
 
                     <div>
                         <div class="flex justify-between items-center mb-1.5">
-                            <span class="text-slate-300 font-medium">Execution Duration</span>
+                            <span class="text-zinc-300 font-medium">Execution Duration</span>
                             <span class="font-mono font-bold text-white"><span id="val-duration">4</span> Hours</span>
                         </div>
                         <input id="slider-duration" type="range" min="1" max="24" value="4" oninput="updateScheduler()">
@@ -305,7 +379,7 @@
 
                     <div>
                         <div class="flex justify-between items-center mb-1.5">
-                            <span class="text-slate-300 font-medium">Cluster Power Draw</span>
+                            <span class="text-zinc-300 font-medium">Cluster Power Draw</span>
                             <span class="font-mono font-bold text-white"><span id="val-power">5.6</span> kW</span>
                         </div>
                         <input id="slider-power" type="range" min="0.5" max="30" step="0.5" value="5.6" oninput="updateScheduler()">
@@ -313,67 +387,67 @@
                 </div>
 
                 <!-- Recommendation Box -->
-                <div class="bg-[#0f1726] border border-emerald-500/40 rounded-xl p-4 space-y-3">
+                <div class="bg-black/50 border border-brand-mint/30 rounded-xl p-4 space-y-3 shadow-inner">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wide flex items-center gap-1.5">
+                        <span class="text-[11px] font-mono uppercase text-brand-mint font-bold flex items-center gap-1.5">
                             <i class="fa-solid fa-circle-check"></i> Recommended Window
                         </span>
-                        <span class="text-xs font-mono font-bold text-emerald-300 bg-emerald-500/20 px-2 py-0.5 rounded" id="badge-pct">-16.6% CO₂</span>
+                        <span class="text-[11px] font-mono font-bold text-brand-mint bg-brand-mint/20 px-2 py-0.5 rounded" id="badge-pct">-16.6% CO₂</span>
                     </div>
 
                     <div class="text-2xl font-bold font-mono text-white tracking-tight" id="disp-window">
                         08:00 AM → 12:00 PM
                     </div>
 
-                    <p class="text-xs text-slate-300 leading-relaxed font-sans" id="disp-desc">
-                        Dispatching at <strong>08:00 AM</strong> saves <strong class="text-emerald-400 font-mono">3.15 kg CO₂</strong> compared to running immediately.
+                    <p class="text-xs text-zinc-300 leading-relaxed font-sans" id="disp-desc">
+                        Dispatching at <strong>08:00 AM</strong> saves <strong class="text-brand-mint font-mono">3.15 kg CO₂</strong> compared to running immediately.
                     </p>
 
                     <!-- Comparison Grid -->
-                    <div class="border-t border-slate-800 pt-3 space-y-1.5 font-mono text-xs">
-                        <div class="flex justify-between text-slate-300">
-                            <span class="text-slate-400">Green Window CI:</span>
-                            <span class="text-emerald-400 font-semibold" id="disp-green-ci">709.3 g/kWh</span>
+                    <div class="border-t border-white/[0.06] pt-3 space-y-1.5 font-mono text-xs">
+                        <div class="flex justify-between text-zinc-300">
+                            <span class="text-zinc-400">Green Window CI:</span>
+                            <span class="text-brand-mint font-semibold" id="disp-green-ci">709.3 g/kWh</span>
                         </div>
-                        <div class="flex justify-between text-slate-300">
-                            <span class="text-slate-400">Peak Peaker CI:</span>
-                            <span class="text-rose-400 font-semibold">850.0 g/kWh</span>
+                        <div class="flex justify-between text-zinc-300">
+                            <span class="text-zinc-400">Peak Peaker CI:</span>
+                            <span class="text-brand-coral font-semibold">850.0 g/kWh</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Export Button -->
-                <button onclick="exportPlan()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg border border-slate-700 text-xs font-semibold transition flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-download text-slate-400"></i> Export Dispatch Schedule (.json)
+                <button onclick="exportPlan()" class="w-full py-2.5 bg-white/[0.04] hover:bg-white/[0.08] text-white rounded-xl border border-white/[0.08] text-xs font-semibold font-sans transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-download text-zinc-400"></i> Export Dispatch Schedule (.json)
                 </button>
             </div>
 
         </div>
 
         <!-- Environmental Impact Strip -->
-        <div class="card p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="glass-panel p-5 flex flex-col md:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                <div class="w-10 h-10 rounded-xl bg-brand-mint/10 border border-brand-mint/20 flex items-center justify-center text-brand-mint text-base">
                     <i class="fa-solid fa-leaf"></i>
                 </div>
                 <div>
-                    <div class="text-sm font-bold text-white">Verified Environmental Impact</div>
-                    <div class="text-xs text-slate-400">Quantified using official IPCC fuel emission coefficients and grid merit dispatch.</div>
+                    <div class="text-sm font-bold text-white font-heading">Verified Environmental Impact</div>
+                    <div class="text-xs text-zinc-400 font-sans">Quantified using official IPCC fuel emission coefficients and grid merit dispatch.</div>
                 </div>
             </div>
 
-            <div class="flex items-center gap-8 text-xs font-mono text-slate-300">
+            <div class="flex items-center gap-8 text-xs font-mono text-zinc-300">
                 <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-car text-slate-500"></i>
-                    <span>EV Driving Avoided: <strong class="text-white" id="stat-ev">20.5 km</strong></span>
+                    <i class="fa-solid fa-car text-zinc-500"></i>
+                    <span>EV Driving: <strong class="text-white" id="stat-ev">20.5 km</strong></span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-mobile text-slate-500"></i>
+                    <i class="fa-solid fa-mobile text-zinc-500"></i>
                     <span>Phone Charges: <strong class="text-white" id="stat-phone">378</strong></span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-network-wired text-slate-500"></i>
-                    <span>Peak Shaved: <strong class="text-emerald-400 font-bold" id="stat-power">5.6 kW</strong></span>
+                    <i class="fa-solid fa-network-wired text-zinc-500"></i>
+                    <span>Peak Shaved: <strong class="text-brand-mint font-bold" id="stat-power">5.6 kW</strong></span>
                 </div>
             </div>
         </div>
@@ -381,19 +455,19 @@
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-slate-800/80 bg-[#090d14] py-4">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
+    <footer class="border-t border-white/[0.06] bg-[#070709] py-4 mt-4">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-500 gap-2 font-mono text-[11px]">
             <div>TEAM SKULL · Hacktoberfest Hack Day Lucknow 2026</div>
-            <div class="flex items-center gap-4 font-mono text-[11px]">
-                <span>Status: <strong class="text-emerald-400">Operational</strong></span>
-                <span>Latency: <strong>1.72s</strong></span>
-                <span>Sandbox: <strong>100% Compliant</strong></span>
+            <div class="flex items-center gap-4">
+                <span>Model: <strong class="text-zinc-300">LightGBM Direct</strong></span>
+                <span>Latency: <strong class="text-zinc-300">1.72s</strong></span>
+                <span class="text-brand-mint">100% Offline Sandbox Compliant</span>
             </div>
         </div>
     </footer>
 
     <script>
-        // Data arrays for 24-hour horizon
+        // 24-hour horizon data arrays
         const hours = Array.from({length: 24}, (_, i) => `${String(i).padStart(2, '0')}:00`);
         const demand = [11998, 12277, 12334, 11916, 11589, 10549, 10383, 10305, 10238, 10321, 10010, 10530, 11237, 11588, 11547, 11454, 10678, 10589, 12115, 12448, 11759, 11700, 12429, 12630];
         const p10 = [9797, 10215, 10960, 10894, 10514, 9697, 9636, 9572, 9287, 9412, 9354, 9951, 10312, 10589, 10613, 10259, 9935, 9422, 11058, 10205, 9270, 9254, 9578, 9707];
@@ -406,9 +480,9 @@
 
         function initDemandChart() {
             const ctx = document.getElementById('demandChart').getContext('2d');
-            const grad = ctx.createLinearGradient(0, 0, 0, 350);
-            grad.addColorStop(0, 'rgba(6, 182, 212, 0.20)');
-            grad.addColorStop(1, 'rgba(6, 182, 212, 0.0)');
+            const grad = ctx.createLinearGradient(0, 0, 0, 360);
+            grad.addColorStop(0, 'rgba(0, 245, 160, 0.22)');
+            grad.addColorStop(1, 'rgba(0, 245, 160, 0.0)');
 
             demandChartInstance = new Chart(ctx, {
                 type: 'line',
@@ -419,7 +493,7 @@
                             label: 'P90 Bound',
                             data: p90,
                             borderColor: 'transparent',
-                            backgroundColor: 'rgba(99, 102, 241, 0.12)',
+                            backgroundColor: 'rgba(139, 92, 246, 0.12)',
                             fill: '+1',
                             pointRadius: 0
                         },
@@ -434,12 +508,12 @@
                         {
                             label: 'Predicted Demand',
                             data: demand,
-                            borderColor: '#06b6d4',
+                            borderColor: '#00F5A0',
                             backgroundColor: grad,
                             fill: true,
                             borderWidth: 2.5,
                             tension: 0.35,
-                            pointBackgroundColor: '#06b6d4',
+                            pointBackgroundColor: '#00F5A0',
                             pointHoverRadius: 6,
                             pointRadius: 3
                         }
@@ -448,31 +522,35 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    animation: {
+                        duration: 1200,
+                        easing: 'easeOutQuart'
+                    },
                     plugins: {
                         legend: { display: false },
                         tooltip: {
-                            backgroundColor: '#0f172a',
-                            borderColor: '#1e293b',
+                            backgroundColor: '#0f1015',
+                            borderColor: 'rgba(255,255,255,0.1)',
                             borderWidth: 1,
-                            padding: 10,
-                            titleFont: { family: 'JetBrains Mono', size: 12 },
-                            bodyFont: { family: 'JetBrains Mono', size: 12 }
+                            padding: 12,
+                            titleFont: { family: 'Space Mono', size: 12 },
+                            bodyFont: { family: 'Space Mono', size: 12 }
                         }
                     },
                     scales: {
                         x: {
-                            grid: { color: 'rgba(255,255,255,0.04)' },
+                            grid: { color: 'rgba(255,255,255,0.03)' },
                             ticks: {
-                                color: '#94a3b8',
-                                font: { family: 'JetBrains Mono', size: 11 },
-                                maxTicksLimit: 12 // Prevent label crowding
+                                color: '#71717a',
+                                font: { family: 'Space Mono', size: 11 },
+                                maxTicksLimit: 12
                             }
                         },
                         y: {
-                            grid: { color: 'rgba(255,255,255,0.04)' },
+                            grid: { color: 'rgba(255,255,255,0.03)' },
                             ticks: {
-                                color: '#94a3b8',
-                                font: { family: 'JetBrains Mono', size: 11 }
+                                color: '#71717a',
+                                font: { family: 'Space Mono', size: 11 }
                             }
                         }
                     }
@@ -489,38 +567,42 @@
                     datasets: [{
                         label: 'Carbon Intensity (gCO2/kWh)',
                         data: carbonIntensity,
-                        backgroundColor: carbonIntensity.map(v => v < 725 ? 'rgba(16, 185, 129, 0.85)' : (v > 820 ? 'rgba(244, 63, 94, 0.85)' : 'rgba(245, 158, 11, 0.85)')),
-                        borderRadius: 4
+                        backgroundColor: carbonIntensity.map(v => v < 725 ? 'rgba(0, 245, 160, 0.85)' : (v > 820 ? 'rgba(255, 77, 109, 0.85)' : 'rgba(245, 158, 11, 0.85)')),
+                        borderRadius: 5
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    animation: {
+                        duration: 1200,
+                        easing: 'easeOutQuart'
+                    },
                     plugins: {
                         legend: { display: false },
                         tooltip: {
-                            backgroundColor: '#0f172a',
-                            borderColor: '#1e293b',
+                            backgroundColor: '#0f1015',
+                            borderColor: 'rgba(255,255,255,0.1)',
                             borderWidth: 1,
-                            padding: 10,
-                            titleFont: { family: 'JetBrains Mono', size: 12 },
-                            bodyFont: { family: 'JetBrains Mono', size: 12 }
+                            padding: 12,
+                            titleFont: { family: 'Space Mono', size: 12 },
+                            bodyFont: { family: 'Space Mono', size: 12 }
                         }
                     },
                     scales: {
                         x: {
-                            grid: { color: 'rgba(255,255,255,0.04)' },
+                            grid: { color: 'rgba(255,255,255,0.03)' },
                             ticks: {
-                                color: '#94a3b8',
-                                font: { family: 'JetBrains Mono', size: 11 },
+                                color: '#71717a',
+                                font: { family: 'Space Mono', size: 11 },
                                 maxTicksLimit: 12
                             }
                         },
                         y: {
-                            grid: { color: 'rgba(255,255,255,0.04)' },
+                            grid: { color: 'rgba(255,255,255,0.03)' },
                             ticks: {
-                                color: '#94a3b8',
-                                font: { family: 'JetBrains Mono', size: 11 }
+                                color: '#71717a',
+                                font: { family: 'Space Mono', size: 11 }
                             },
                             min: 650
                         }
@@ -560,15 +642,15 @@
             document.getElementById('disp-window').innerText = `${startStr} → ${endStr}`;
             document.getElementById('badge-pct').innerText = `-${pctSaved.toFixed(1)}% CO₂`;
             document.getElementById('kpi-pct').innerText = `-${pctSaved.toFixed(1)}%`;
-            document.getElementById('kpi-saved-kg').innerHTML = `<i class="fa-solid fa-leaf text-xs"></i> ${co2Saved.toFixed(2)} kg CO₂ Avoided`;
-            document.getElementById('disp-desc').innerHTML = `Dispatching at <strong>${startStr}</strong> saves <strong class="text-emerald-400 font-mono">${co2Saved.toFixed(2)} kg CO₂</strong> compared to running immediately.`;
+            document.getElementById('kpi-saved-kg').innerHTML = `<i class="fa-solid fa-leaf text-brand-mint text-[11px]"></i> ${co2Saved.toFixed(2)} kg CO₂ Avoided`;
+            document.getElementById('disp-desc').innerHTML = `Dispatching at <strong>${startStr}</strong> saves <strong class="text-brand-mint font-mono">${co2Saved.toFixed(2)} kg CO₂</strong> compared to running immediately.`;
 
             let windowAvgCI = 0;
             for (let j = 0; j < duration; j++) windowAvgCI += carbonIntensity[bestStart + j];
             windowAvgCI /= duration;
             document.getElementById('disp-green-ci').innerText = `${windowAvgCI.toFixed(1)} g/kWh`;
 
-            // Equivalencies
+            // Real-world Equivalencies
             document.getElementById('stat-ev').innerText = `${(co2Saved * 6.5).toFixed(1)} km`;
             document.getElementById('stat-phone').innerText = `${Math.round(co2Saved * 120)}`;
             document.getElementById('stat-power').innerText = `${power.toFixed(1)} kW`;
@@ -600,22 +682,22 @@
             viewAudit.classList.add('hidden');
             legend.classList.add('hidden');
 
-            btnDemand.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold border border-transparent transition tab-inactive';
-            btnCarbon.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold border border-transparent transition tab-inactive';
-            btnAudit.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold border border-transparent transition tab-inactive';
+            btnDemand.className = 'tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold tab-btn-inactive';
+            btnCarbon.className = 'tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold tab-btn-inactive';
+            btnAudit.className = 'tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold tab-btn-inactive';
 
             if (tab === 'demand') {
                 viewDemand.classList.remove('hidden');
                 legend.classList.remove('hidden');
-                btnDemand.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold border border-transparent transition tab-active';
+                btnDemand.className = 'tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold tab-btn-active';
                 if (demandChartInstance) demandChartInstance.resize();
             } else if (tab === 'carbon') {
                 viewCarbon.classList.remove('hidden');
-                btnCarbon.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold border border-transparent transition tab-active';
+                btnCarbon.className = 'tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold tab-btn-active';
                 if (carbonChartInstance) carbonChartInstance.resize();
             } else if (tab === 'audit') {
                 viewAudit.classList.remove('hidden');
-                btnAudit.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold border border-transparent transition tab-active';
+                btnAudit.className = 'tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold tab-btn-active';
             }
         }
 
@@ -631,7 +713,7 @@
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentPlanData, null, 2));
             const dlAnchor = document.createElement('a');
             dlAnchor.setAttribute("href", dataStr);
-            dlAnchor.setAttribute("download", `dispatch_plan_${currentPlanData.task.replace(/\\s+/g, '_')}.json`);
+            dlAnchor.setAttribute("download", `green_schedule_${currentPlanData.task.replace(/\\s+/g, '_')}.json`);
             dlAnchor.click();
         }
 
