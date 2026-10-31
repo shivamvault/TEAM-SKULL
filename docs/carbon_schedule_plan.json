@@ -1,0 +1,30 @@
+{
+  "task_name": "LLM LoRA Fine-Tuning",
+  "duration_hours": 4,
+  "power_kw": 5.6,
+  "optimal_window": {
+    "start_idx": 7,
+    "start_time": "2024-06-17 07:00:00",
+    "end_time": "2024-06-17 10:00:00",
+    "total_kg_co2": 16.379,
+    "avg_ci_g_kwh": 731.22
+  },
+  "immediate_window": {
+    "start_idx": 0,
+    "start_time": "2024-06-17 00:00:00",
+    "end_time": "2024-06-17 03:00:00",
+    "total_kg_co2": 19.04,
+    "avg_ci_g_kwh": 850.0
+  },
+  "worst_window": {
+    "start_idx": 20,
+    "start_time": "2024-06-17 20:00:00",
+    "end_time": "2024-06-17 23:00:00",
+    "total_kg_co2": 19.04,
+    "avg_ci_g_kwh": 850.0
+  },
+  "co2_saved_kg": 2.661,
+  "co2_reduction_pct": 14.0,
+  "max_potential_reduction_pct": 14.0,
+  "recommendation": "Schedule 'LLM LoRA Fine-Tuning' at 2024-06-17 07:00:00 to save 14.0% CO2 emissions (2.661 kg CO2) compared to immediate dispatch."
+}
