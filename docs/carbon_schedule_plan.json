@@ -1,13 +1,13 @@
 {
-  "task_name": "LLM LoRA Fine-Tuning",
+  "task_name": "LLM LoRA Fine-Tuning (8x H100 GPUs)",
   "duration_hours": 4,
   "power_kw": 5.6,
   "optimal_window": {
-    "start_idx": 7,
-    "start_time": "2024-06-17 07:00:00",
-    "end_time": "2024-06-17 10:00:00",
-    "total_kg_co2": 16.379,
-    "avg_ci_g_kwh": 731.22
+    "start_idx": 8,
+    "start_time": "2024-06-17 08:00:00",
+    "end_time": "2024-06-17 11:00:00",
+    "total_kg_co2": 15.888,
+    "avg_ci_g_kwh": 709.31
   },
   "immediate_window": {
     "start_idx": 0,
@@ -23,8 +23,8 @@
     "total_kg_co2": 19.04,
     "avg_ci_g_kwh": 850.0
   },
-  "co2_saved_kg": 2.661,
-  "co2_reduction_pct": 14.0,
-  "max_potential_reduction_pct": 14.0,
-  "recommendation": "Schedule 'LLM LoRA Fine-Tuning' at 2024-06-17 07:00:00 to save 14.0% CO2 emissions (2.661 kg CO2) compared to immediate dispatch."
+  "co2_saved_kg": 3.152,
+  "co2_reduction_pct": 16.6,
+  "max_potential_reduction_pct": 16.6,
+  "recommendation": "Schedule 'LLM LoRA Fine-Tuning (8x H100 GPUs)' at 2024-06-17 08:00:00 to save 16.6% CO2 emissions (3.152 kg CO2) compared to immediate dispatch."
 }
