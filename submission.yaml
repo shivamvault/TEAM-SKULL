@@ -1,0 +1,6 @@
+team: team-skull
+problem: p2
+entry: forecaster:forecast
+python: "3.11"
+train_cmd: "python train.py --data-dir {data_dir} --out models/"
+
